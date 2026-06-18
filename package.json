@@ -1,0 +1,32 @@
+{
+  "name": "cats-dogs-clubhouse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nournouas/Cats-Dogs-Clubhouse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Nournouas/Cats-Dogs-Clubhouse/issues"
+  },
+  "homepage": "https://github.com/Nournouas/Cats-Dogs-Clubhouse#readme",
+  "dependencies": {
+    "connect-pg-simple": "^10.0.0",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "nodemon": "^3.1.14",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.21.0"
+  }
+}
