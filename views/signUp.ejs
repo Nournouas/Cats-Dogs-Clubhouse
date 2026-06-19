@@ -1,0 +1,26 @@
+<html lang="en">
+  <%- include("partials/head", {title: "Sign up"}) %>
+  <main>
+    <h1>Welcome to C&D</h1>
+    <div class="vertical-container">
+      <form action="/signup" method="POST">
+        <label for="firstname">First Name:</label>
+        <input maxlength="30" required type="text" name="firstname" id="firstname">
+        <label for="lastname">Last Name:</label>
+        <input maxlength="30" required type="text" name="lastname" id="lastname">
+        <label for="username">Username:</label>
+        <input maxlength="30" required type="text" name="username" id="username">
+        <label for="password">Password:</label>
+        <input type="password" required maxlength="40" name="password" id="password">
+        <label for="animal">Favourite Animal</label>
+        <select name="animal" id="animal">
+          <option value="dog">dog</option>
+          <option value="cat">cat</option>
+          <option value="both">both</option>
+          <option value="neither">neither</option>
+        </select>
+        <button type="submit">Create Account</button>
+      </form>
+    </div>
+  </main>
+</html>
