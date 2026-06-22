@@ -3,6 +3,15 @@
   <main>
     <h1>Welcome to C&D</h1>
     <div class="vertical-container">
+      <div>
+        <% if (errors.length > 0) { %>
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error.msg %></li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
       <form action="/signup" method="POST">
         <label for="firstname">First Name:</label>
         <input maxlength="30" required type="text" name="firstname" id="firstname">
@@ -12,6 +21,8 @@
         <input maxlength="30" required type="text" name="username" id="username">
         <label for="password">Password:</label>
         <input type="password" required maxlength="40" name="password" id="password">
+        <label for="passwordConfirm">Confirm Password:</label>
+        <input type="password" required maxlength="40" name="passwordConfirm" id="passwordConfirm">
         <label for="animal">Favourite Animal</label>
         <select name="animal" id="animal">
           <option value="dog">dog</option>

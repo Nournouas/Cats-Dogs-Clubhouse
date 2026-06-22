@@ -5,17 +5,21 @@ const { body, validationResult, matchedData } = require("express-validator");
 
 const validateUser = [
   body("firstname").trim()
-    .isAlphanumeric()
-    .isLength({min: 1, max: 30}),
+    .isAlphanumeric().withMessage("First name cannot use special symbols")
+    .isLength({min: 1, max: 30}).withMessage("First name has to be betwen 1 and 30 characters"),
   body("lastname").trim()
-    .isAlphanumeric()
-    .isLength({min: 1, max: 30}),
+    .isAlphanumeric().withMessage("Last name cannot use special symbols")
+    .isLength({min: 1, max: 30}).withMessage("Last name has to be betwen 1 and 30 characters"),
   body("username").trim()
-    .isAlphanumeric()
-    .isLength({min: 1, max: 30}),
+    .isAlphanumeric().withMessage("Username cannot use special symbols")
+    .isLength({min: 1, max: 30}).withMessage("Username has to be betwen 1 and 30 characters"),
   body("password").trim()
-    .isAlphanumeric()
     .isLength({min: 1}),
+  body("passwordConfirm").trim()
+    .isLength({min: 1})
+    .custom((value, {req}) => {
+      return value === req.body.password;
+    }).withMessage("Password confirmation does not match the password"),
   body("animal").trim()
     .isAlphanumeric()
 ]
@@ -25,7 +29,7 @@ const signUpFormHandler = [
     async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()){
-      return res.status(400).redirect("/");
+      return res.status(400).render("signUp", {errors: errors.errors});
     }
     const {
       firstname,
@@ -40,7 +44,7 @@ const signUpFormHandler = [
       const hashedPass = await bcrypt.hash(password, 10);
       const values = [firstname, lastname, username, hashedPass, animal];
       await pool.query(addNewUser, values);
-      res.redirect("/");
+      res.redirect("/login");
     } catch (err) {
       console.error(err);
       // TODO add error handling

@@ -1,0 +1,24 @@
+<html lang="en">
+  <%- include("partials/head", {title: "Sign up"}) %>
+  <main>
+    <h1>Login</h1>
+    <div class="vertical-container">
+      <div>
+        <% if (errors.length > 0) { %>
+          <ul>
+            <% errors.forEach((error) => { %>
+              <li><%= error.msg %></li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+      <form action="/login" method="POST">
+        <label for="username">Username:</label>
+        <input maxlength="30" required type="text" name="username" id="username">
+        <label for="password">Password:</label>
+        <input type="password" required maxlength="40" name="password" id="password">
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </main>
+</html>

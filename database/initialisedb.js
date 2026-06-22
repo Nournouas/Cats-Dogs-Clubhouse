@@ -13,6 +13,17 @@ const startDB = async () => {
       animal      animal_preference  NOT NULL DEFAULT 'none'
   );`);
 
+    await pool.query(`CREATE TABLE IF NOT EXISTS sessions (
+      id          INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      firstname   VARCHAR(30)        NOT NULL,
+      lastname    VARCHAR(30)        NOT NULL,
+      username    VARCHAR(30)        NOT NULL UNIQUE,
+      password    VARCHAR            NOT NULL,
+      is_member   BOOLEAN            NOT NULL DEFAULT FALSE,
+      animal      animal_preference  NOT NULL DEFAULT 'none'
+  );`);
+
+
   await pool.query(`CREATE TABLE IF NOT EXISTS messages (
       id          INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       title       VARCHAR(100)       NOT NULL,
@@ -22,4 +33,12 @@ const startDB = async () => {
   );`);
 }
 
-startDB();
+const startsession = async () => {
+    await pool.query(`CREATE TABLE sessions (
+  sid    VARCHAR        NOT NULL COLLATE "default" PRIMARY KEY,
+  sess   JSON           NOT NULL,
+  expire TIMESTAMP(6)   NOT NULL
+);
+CREATE INDEX ON sessions (expire);`);
+    }
+startsession();
