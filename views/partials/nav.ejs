@@ -3,20 +3,26 @@
     <!-- add icon -->
      <a href="/homepage">Homepage</a>
   </div>
-  <div>
-    <a href="">dog only</a>
-    <a href="">both</a>
-    <a href="">cat only</a>
-  </div>
+    <div>
+      <a href="/homepage/dog">dog only</a>
+      <a href="/homepage/both">both</a>
+      <a href="/homepage/cat">cat only</a>
+    </div>
   <div>
       <div class="dropdown">
         <button class="dropbtn">Dropdown
           <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-          <a href="#">Settings</a>
-          <a href="/logout">Logout</a>
-          <a href="/homepage/secret">Enter Secret Code</a>
+          <% if (user) { %>
+            <a href="#">Settings</a>
+            <a href="/logout">Logout</a>
+            <a href="/homepage/secret">Enter Secret Code</a>
+          <% } else { %>
+            <a href="/signup">Signup</a>
+            <a href="/login">Login</a>
+            <% } %>
+          
         </div>
       </div>
   </div>

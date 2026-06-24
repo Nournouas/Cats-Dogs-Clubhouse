@@ -41,4 +41,20 @@ const startsession = async () => {
 );
 CREATE INDEX ON sessions (expire);`);
     }
-startsession();
+
+    const startmessages = async () => {
+    await pool.query(`CREATE TABLE IF NOT EXISTS messages (
+      id          INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+      title       VARCHAR(100)       NOT NULL,
+      body        VARCHAR(300),
+      created_at  TIMESTAMPTZ        NOT NULL DEFAULT NOW(),
+      username     VARCHAR                NOT NULL,
+      user_id     INT                NOT NULL REFERENCES users(id)
+  );`);
+    }
+
+        const startmembers = async () => {
+    await pool.query(`ALTER TABLE messages
+      ADD COLUMN animal animal_preference NOT NULL DEFAULT 'both';`);
+    }
+startmembers();

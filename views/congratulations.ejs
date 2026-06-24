@@ -1,8 +1,8 @@
 <html lang="en">
   <%- include("partials/head", {title: "congratulations"}) %>
-  <%- include("partials/nav") %>
+  <%- include("partials/nav", {user: user}) %>
   <main>
-    <h1>Welcome <%= user.username %>, congratulations on being upgraded to a member!</h1>
+    <h1>Welcome <%= user.username %>, congratulations on being upgraded to a <%= role %>!</h1>
     <a href="/homepage">Homepage</a>
   </main>
 </html>
