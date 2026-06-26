@@ -14,7 +14,7 @@ const signupGetHandler = (req, res) => {
 
 const signupPostHandler = [
   validateUser,
-  async (req, res) => {
+  async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).render("signUp", {errors: errors.errors});

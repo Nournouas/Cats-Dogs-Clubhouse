@@ -6,7 +6,7 @@ const indexHandler = (req, res) => {
   }
 }
 
-const logoutHandler = (req, res) => {
+const logoutHandler = (req, res, next) => {
   req.logout((err) => {
     if (err){
       return next(err);

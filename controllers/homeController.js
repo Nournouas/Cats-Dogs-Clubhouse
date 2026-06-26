@@ -1,6 +1,6 @@
 const pool = require ("../database/pool");
 require('dotenv').config();
-const { alidationResult, matchedData } = require("express-validator");
+const { validationResult, matchedData } = require("express-validator");
 const { validateCode } = require("../utilities/validations")
 const { selectAllMessages, 
         deleteMessageByID,
@@ -8,37 +8,36 @@ const { selectAllMessages,
         selectFilteredMessages,
         updateUserMember,
         updateUserAdmin,
-        
-      } = require("../utilities/queries")
+        } = require("../utilities/queries")
 
-const homepageGetHandler = async (req, res) => {
+const homepageGetHandler = async (req, res, next) => {
   try{
     const { rows } = await pool.query(selectAllMessages);
+    if(req.user != undefined){
+      res.render("homePage", { user : req.user, messages: rows, animalFilter: undefined });
+    }else{
+      res.render("homePage", { user : null, messages: rows, animalFilter: undefined });
+    }
   }
   catch(err){
     next(err);
-  }
-  
-  if(req.user != undefined){
-    res.render("homePage", { user : req.user, messages: rows, animalFilter: undefined });
-  }else{
-    res.render("homePage", { user : null, messages: rows, animalFilter: undefined });
   }
 }
 
-const homepageDeleteMessage = async (req, res) => { 
+const homepageDeleteMessage = async (req, res, next) => { 
   try{
     await pool.query(deleteMessageByID, [req.params.message_id])
+    if (req.params.animal){
+      res.redirect(`/homepage/${req.params.animal}`);
+    }else{
+      res.redirect("/homepage");
+    }
   }
   catch(err){
     next(err);
   }
   
-  if (req.params.animal){
-    res.redirect(`/homepage/${req.params.animal}`);
-  }else{
-    res.redirect("/homepage");
-  }
+
 }
 
 const secretPageGetHandler = (req, res) => {
@@ -50,7 +49,7 @@ const secretPageGetHandler = (req, res) => {
 }
 
 
-const addMessageHandler = async (req, res) => {
+const addMessageHandler = async (req, res, next) => {
   try {
     await pool.query(insertMessage, [req.body.title, req.body.body, req.user.username, req.user.id, req.user.animal])
     res.redirect("/homepage")
@@ -60,7 +59,7 @@ const addMessageHandler = async (req, res) => {
   }
 }
 
-const filteredHomepageGetHandler = async (req, res) => {
+const filteredHomepageGetHandler = async (req, res, next) => {
   const filterAnimal = req.params.filter
   let rows;
   try{
@@ -75,21 +74,22 @@ const filteredHomepageGetHandler = async (req, res) => {
       rows = await pool.query(selectAllMessages);
       break;
     }
+    rows = rows.rows
+    if(req.user != undefined){
+      res.render("homePage", { user : req.user, messages: rows, animalFilter: filterAnimal});
+    }else{
+      res.render("homePage", { user : null, messages: rows, animalFilter: undefined });
+    }
   }
   catch(err){
     next(err);
   }
-  rows = rows.rows
-  if(req.user != undefined){
-    res.render("homePage", { user : req.user, messages: rows, animalFilter: filterAnimal});
-  }else{
-    res.render("homePage", { user : null, messages: rows, animalFilter: undefined });
-  }
+  
 }
 
 const processSecretCode = [
   validateCode,
-  async (req, res) => {
+  async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()){
       return res.status(400).render("secretCode", {errors: errors.errors});
