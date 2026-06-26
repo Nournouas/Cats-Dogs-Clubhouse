@@ -16,17 +16,15 @@ const pool = require ("./database/pool");
 require('dotenv').config();
 app.use(session({
   store: new pgSession({
-    pool : pool,                // Connection pool
-    tableName : 'sessions'   // Use another table-name than the default "session" one
-    // Insert connect-pg-simple options here
+    pool : pool,              
+    tableName : 'sessions'
   }),
   secret: process.env.COOKIE_SECRET,
   saveUninitialized: false,
   resave: false,
-  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
-  // Insert express-session options here
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } 
 }));
-require("./controllers/passport");
+require("./utilities/passport");
 app.use(passport.session())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -35,9 +33,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 
+//routes
 app.use("/login", loginRouter);
 app.use("/signup", signupRouter);
 app.use("/homepage", homeRouter);
 app.use("/", indexRouter);
+app.use((req, res, next) => {
+  res.status(404).render("errors", {message: "404 - page not found!"})
+});
+
+app.use((err, req, res, next) => {
+  if (err.status === 500 || err.status === 502 || err.status === 503 || err.status === 504){
+    res.status(500).render("errors", {message: "Server Errors, Please try again"})
+  }else if (err.status === 400 || err.status === 403 || err.status === 408 || err.status === 429){
+    res.status(400).render("errors", {message: "Client Error"})
+  }else{
+    res.status(500).render("errors", {message: "Server Errors, Please try again"})
+  }
+})
 
 app.listen(3000);

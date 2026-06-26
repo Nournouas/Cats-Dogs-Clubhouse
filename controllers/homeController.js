@@ -1,21 +1,89 @@
 const pool = require ("../database/pool");
 require('dotenv').config();
-const { body, validationResult, matchedData } = require("express-validator");
-const validateCode = [
-  body("secret").trim()
-  .isAlpha().withMessage("Secret Code does not container numbers")
-  .isLength({min: 1})
-]
+const { alidationResult, matchedData } = require("express-validator");
+const { validateCode } = require("../utilities/validations")
+const { selectAllMessages, 
+        deleteMessageByID,
+        insertMessage,
+        selectFilteredMessages,
+        updateUserMember,
+        updateUserAdmin,
+        
+      } = require("../utilities/queries")
 
-const addMessage = async (req, res) => {
+const homepageGetHandler = async (req, res) => {
   try{
-    await pool.query(`INSERT INTO messages (title, body, username, user_id, animal)
-      VALUES ($1, $2, $3, $4, $5);`, [req.body.title, req.body.body, req.user.username, req.user.id, req.user.animal])
-      
+    const { rows } = await pool.query(selectAllMessages);
+  }
+  catch(err){
+    next(err);
+  }
+  
+  if(req.user != undefined){
+    res.render("homePage", { user : req.user, messages: rows, animalFilter: undefined });
+  }else{
+    res.render("homePage", { user : null, messages: rows, animalFilter: undefined });
+  }
+}
+
+const homepageDeleteMessage = async (req, res) => { 
+  try{
+    await pool.query(deleteMessageByID, [req.params.message_id])
+  }
+  catch(err){
+    next(err);
+  }
+  
+  if (req.params.animal){
+    res.redirect(`/homepage/${req.params.animal}`);
+  }else{
+    res.redirect("/homepage");
+  }
+}
+
+const secretPageGetHandler = (req, res) => {
+  if (!req.user){
     res.redirect("/homepage")
-  }catch(err){
-    console.log(err)
+  }else{
+    res.render("secretCode", {errors: [], user : req.user})
+  }
+}
+
+
+const addMessageHandler = async (req, res) => {
+  try {
+    await pool.query(insertMessage, [req.body.title, req.body.body, req.user.username, req.user.id, req.user.animal])
     res.redirect("/homepage")
+  }
+  catch(err) {
+    next(err);
+  }
+}
+
+const filteredHomepageGetHandler = async (req, res) => {
+  const filterAnimal = req.params.filter
+  let rows;
+  try{
+    switch (filterAnimal){
+    case "dog":
+      rows = await pool.query(selectFilteredMessages, [filterAnimal]);
+      break;
+    case "cat":
+      rows = await pool.query(selectFilteredMessages, [filterAnimal]);
+      break;
+    case "both":
+      rows = await pool.query(selectAllMessages);
+      break;
+    }
+  }
+  catch(err){
+    next(err);
+  }
+  rows = rows.rows
+  if(req.user != undefined){
+    res.render("homePage", { user : req.user, messages: rows, animalFilter: filterAnimal});
+  }else{
+    res.render("homePage", { user : null, messages: rows, animalFilter: undefined });
   }
 }
 
@@ -27,23 +95,29 @@ const processSecretCode = [
       return res.status(400).render("secretCode", {errors: errors.errors});
     }
     const { secret } = matchedData(req);
-    try{
+    try {
       if (secret === process.env.CLUB_SECRET) {
-        await pool.query(`UPDATE users SET is_member = true WHERE id = $1`, [req.user.id])
+        await pool.query(updateUserMember, [req.user.id])
         res.render("congratulations", {role: "member" , user : req.user });
-      }else if (secret === process.env.ADMIN_SECRET) {
-        await pool.query(`UPDATE users SET is_member = true WHERE id = $1`, [req.user.id])
-        await pool.query(`UPDATE users SET is_admin = true WHERE id = $1`, [req.user.id])
+      }
+      else if (secret === process.env.ADMIN_SECRET) {
+        await pool.query(updateUserMember, [req.user.id])
+        await pool.query(updateUserAdmin, [req.user.id])
         res.render("congratulations", {role: "admin" , user : req.user });
       }
       
-    }catch(err){
-      res.redirect("/")
+    }
+    catch(err) {
+      next(err);
     } 
   }
 ]
 
 module.exports= {
+  homepageGetHandler,
   processSecretCode,
-  addMessage
+  addMessageHandler,
+  homepageDeleteMessage,
+  secretPageGetHandler,
+  filteredHomepageGetHandler
 }

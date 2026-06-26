@@ -1,11 +1,9 @@
 const express = require("express");
 const signupRouter = express.Router();
-const { signUpFormHandler } = require("../controllers/signupController")
+const { signupPostHandler, signupGetHandler } = require("../controllers/signupController")
 
-signupRouter.get("/", (req, res) => {
-  res.render("signUp", {errors: []});
-});
-signupRouter.post("/",  signUpFormHandler);
+signupRouter.get("/", signupGetHandler);
+signupRouter.post("/",  signupPostHandler);
 
 module.exports = {
   signupRouter,

@@ -1,19 +1,11 @@
 const express = require("express");
 const indexRouter = express.Router();
+const { indexHandler, logoutHandler } = require("../controllers/indexController");
 
 
-indexRouter.get("/", (req, res) => {
-  res.render("indexPage")
-});
+indexRouter.get("/", indexHandler);
 
-indexRouter.get("/logout", (req, res) => {
-  req.logout((err) => {
-    if (err){
-      return next(err);
-    }
-    res.redirect("/")
-  })
-})
+indexRouter.get("/logout", logoutHandler)
 
 module.exports = {
   indexRouter,
