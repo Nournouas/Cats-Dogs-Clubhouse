@@ -1,8 +1,8 @@
 <html lang="en">
   <%- include("partials/head", {title: "Sign up"}) %>
-  <main>
+  <main class="centered-children">
     <h1>Login</h1>
-    <div class="vertical-container">
+    <div class="vertical-container signup-div">
       <div>
         <% if (errors.length > 0) { %>
           <ul>
@@ -12,15 +12,22 @@
           </ul>
         <% } %>
       </div>
+      <div>
+        <% if (message != null) { %>
+          <ul>
+              <li><%= message %></li>
+          </ul>
+        <% } %>
+      </div>
       <form action="/login" method="POST">
         <label for="username">Username:</label>
         <input maxlength="30" required type="text" name="username" id="username">
         <label for="password">Password:</label>
         <input type="password" required maxlength="40" name="password" id="password">
-        <button type="submit">Login</button>
+        <button class="CTA" type="submit">Login</button>
       </form>
     </div>
-    <a href="/homepage">Continue as guest</a>
-    <a href="/login">Login instead</a>
+    <a class="CTA secondary" href="/homepage">Continue as guest</a>
+    <a class="CTA secondary" href="/signup">Sign up instead</a>
   </main>
 </html>

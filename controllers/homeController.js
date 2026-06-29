@@ -99,8 +99,7 @@ const processSecretCode = [
       if (secret === process.env.CLUB_SECRET) {
         await pool.query(updateUserMember, [req.user.id])
         res.render("congratulations", {role: "member" , user : req.user });
-      }
-      else if (secret === process.env.ADMIN_SECRET) {
+      } else if (secret === process.env.ADMIN_SECRET) {
         await pool.query(updateUserMember, [req.user.id])
         await pool.query(updateUserAdmin, [req.user.id])
         res.render("congratulations", {role: "admin" , user : req.user });

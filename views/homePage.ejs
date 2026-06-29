@@ -1,16 +1,23 @@
 <html lang="en">
   <%- include("partials/head", {title: "C&D Homepage"}) %>
   <%- include("partials/nav", {user: user}) %>
-  <main>
+  <main class="homepage-main">
     <% if (user != undefined){ %>
-      <h1>Welcome <%= user.username %></h1>
+      <h1 class="wlcm-header">Welcome <%= user.username %></h1>
       <div class="messages-div">
-        <form action="/homepage/new" method="post">
-          <label for="title">Title</label>
-          <input type="text" name="title" id="title">
-          <label for="body">Post</label>
-          <input type="text" name="body" id="body">
-          <button type="submit">Post message</button>
+        <form class="msg-form" action="/homepage/new" method="post">
+          <div class="msg-inputs-div">
+            <div class="input-div">
+              <label for="title">Post Title:</label>
+              <input maxlength="100" type="text" name="title" id="title" required >
+            </div>
+            <div class="input-div">
+                <label for="body">Post Body:</label>
+                <textarea maxlength="300" type="text" name="body" id="body" required></textarea>
+              </div>
+          </div>
+          
+          <button class="CTA" type="submit">Post message</button>
         </form>
       </div>
     <% } else { %>
@@ -18,27 +25,34 @@
       <a href="/signup">Sign Up</a>
       <a href="/login">Login</a>
     <% } %>
+    <div class="horizontal-divider"></div>
     <div>
+      <h2 class="community-h2">Community Posts:</h2>
       <% if (messages.length > 0 && messages) { %>
         <% messages.forEach(message => { %>
-            <div>
+            <div class="msg-board-card">
               <% if (user && user.is_member === true){ %>
-                <div>
-                  <h2>Author: <%= message.username %></h2>
+                <div class="author-div">
+                  <img class="author-img" src="logo.png" alt="">
+                  <h2><%= message.username %> |</h2>
+                  <h2>Team <%= message.animal %></h2>
                 </div>
+                <div class="horizontal-divider"></div>
               <% } %>
-              <h1><%= message.title %></h1>
-              <h2><%= message.animal %></h2>
-              <p><%= message.body %></p>
-              <span><%= message.created_at %></span>
+              <h3 class="message-title"><%= message.title %></h3>
+              
+              <p class="message-body"><%= message.body %></p>
+              <%  const date = new Date(message.created_at) %>
+              <%  const formatted = date.toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" }); %>
+              <p class="message-date"><%= formatted %></p>
               <% if (user && user.is_admin === true) { %>
                 <% if (animalFilter){ %>
-                  <form action='/homepage/delete/<%= message.id %>/<%= animalFilter %>'>
-                  <button type="submit">Delete</button>
+                  <form class="delete-msg-form" action='/homepage/delete/<%= message.id %>/<%= animalFilter %>'>
+                  <button class="delete-btn" type="submit">Delete</button>
                 </form>
                 <% } else{ %>
-                <form action='/homepage/delete/<%= message.id %>'>
-                  <button type="submit">Delete</button>
+                <form class="delete-msg-form" action='/homepage/delete/<%= message.id %>'>
+                  <button class="delete-btn" type="submit">Delete</button>
                 </form>
                 <% } %>
               <% } %>

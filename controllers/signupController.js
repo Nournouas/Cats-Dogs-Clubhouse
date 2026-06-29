@@ -34,7 +34,8 @@ const signupPostHandler = [
     res.redirect("/login");
   } 
   catch (err) {
-    next(err)
+    console.log(err)
+    res.status(400).render("signUp", {errors: [{msg: err.detail}]})
   }
 }]
 

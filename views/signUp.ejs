@@ -1,9 +1,9 @@
 <html lang="en">
   <%- include("partials/head", {title: "Sign up"}) %>
-  <main>
-    <h1>Welcome to C&D</h1>
-    <div class="vertical-container">
-      <div>
+  <main class="centered-children">
+    <h1>Sign Up</h1>
+    <div class="vertical-container signup-div">
+      <div class="vertical-container left-align margin-bot-24px">
         <% if (errors.length > 0) { %>
           <ul>
             <% errors.forEach((error) => { %>
@@ -12,7 +12,7 @@
           </ul>
         <% } %>
       </div>
-      <form action="/signup" method="POST">
+      <form class="max-width-1000" action="/signup" method="POST">
         <label for="firstname">First Name:</label>
         <input maxlength="30" required type="text" name="firstname" id="firstname">
         <label for="lastname">Last Name:</label>
@@ -29,10 +29,10 @@
           <option value="cat">cat</option>
           <option value="both">both</option>
         </select>
-        <button type="submit">Create Account</button>
+        <button class="CTA" type="submit">Create Account</button>
       </form>
     </div>
-    <a href="/homepage">Continue as guest</a>
-    <a href="/login">Login instead</a>
+    <a class="CTA secondary" href="/homepage">Continue as guest</a>
+    <a class="CTA secondary" href="/login">Log in instead</a>
   </main>
 </html>
