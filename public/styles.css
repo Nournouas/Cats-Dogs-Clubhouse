@@ -202,7 +202,7 @@ input, select, option, textarea{
 .homepage-main{
   display: flex;
   flex-direction: column;
-  padding: 3vh 3vw;
+  padding: 3vh 20vw;
 }
 
 .wlcm-header{
