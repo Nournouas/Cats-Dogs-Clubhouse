@@ -13,6 +13,7 @@ const { selectAllMessages,
 const homepageGetHandler = async (req, res, next) => {
   try{
     const { rows } = await pool.query(selectAllMessages);
+    console.log(rows)
     if(req.user != undefined){
       res.render("homePage", { user : req.user, messages: rows, animalFilter: undefined });
     }else{

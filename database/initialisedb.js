@@ -1,4 +1,11 @@
 const pool = require("./pool");
+const { selectAllMessages, 
+        deleteMessageByID,
+        insertMessage,
+        selectFilteredMessages,
+        updateUserMember,
+        updateUserAdmin,
+        } = require("../utilities/queries")
 
 const startDB = async () => {
   //await pool.query(`CREATE TYPE animal_preference AS ENUM ( 'dog', 'cat', 'both');`);
@@ -58,4 +65,9 @@ const startmembers = async () => {
   ADD COLUMN animal animal_preference NOT NULL DEFAULT 'both';`);
 }
 
-startDB();
+const checkdb = async() => {
+   const { rows } = await pool.query("SELECT * FROM users;");
+   console.log(rows)
+}
+
+checkdb();
