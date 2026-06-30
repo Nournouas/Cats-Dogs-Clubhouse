@@ -17,7 +17,7 @@ require('dotenv').config();
 app.use(session({
   store: new pgSession({
     pool : pool,              
-    tableName : 'sessions'
+    tableName : 'catsdogs'
   }),
   secret: process.env.COOKIE_SECRET,
   saveUninitialized: false,
