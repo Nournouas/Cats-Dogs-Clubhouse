@@ -17,7 +17,6 @@
   font-family: Arial;
   display: flex;
   justify-content: space-between;
-  transition: 100ms ease-in-out;
 }
 
 /* Links inside the navbar */
@@ -29,6 +28,7 @@
   padding: 14px 16px;
   text-decoration: none;
   transition: 100ms ease-in-out;
+  right: 0px;
 }
 
 /* The dropdown container */
@@ -36,6 +36,7 @@
   float: left;
   overflow: hidden;
   transition: 100ms ease-in-out;
+  right: 0px;
   
 }
 
@@ -51,6 +52,7 @@
   font-family: inherit; /* Important for vertical align on mobile phones */
   margin: 0; /* Important for vertical align on mobile phones */
   cursor: pointer;
+  right: 0px;
   
 }
 
@@ -59,17 +61,19 @@
   
   background-color: var(--canary-Yellow);
   border-radius: 5px;
+  transition: 100ms ease-in-out;
 }
 
 /* Dropdown content (hidden by default) */
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
+  background-color: var(--lime-cream);
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   transition: 100ms ease-in-out;
+  border-radius: 5px;
 }
 
 /* Links inside the dropdown */
@@ -81,16 +85,20 @@
   display: block;
   text-align: left;
   transition: 100ms ease-in-out;
+  right: 0px;
 }
 
 /* Add a grey background color to dropdown links on hover */
 .dropdown-content a:hover {
-  background-color: #ddd;
+  background-color: var(--canary-Yellow);
+  transition: 100ms ease-in-out;
 }
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
+  right: 0px;
+  transition: 100ms ease-in-out;
 }
 
 .centered-children{
@@ -99,6 +107,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  right: 0px;
 }
 
 .vertical-container{
@@ -142,7 +151,7 @@
 
 .secondary{
   background-color: rgba(0, 0, 0, 0);
-  border: 1px solid var(--powder-blue);
+  border: 2px solid var(--powder-blue);
   color: var(--chocolate-plum);
   box-shadow: none;
 }
@@ -154,7 +163,7 @@ form{
 }
 
 .CTA:hover{
-  scale: 1.1;
+  scale: 1.05;
 }
 
 label, input, select, option, textarea{
@@ -310,4 +319,27 @@ input, select, option, textarea{
   display: flex;
   width: 100%;
   align-items: end;
+}
+
+
+.active-anchor{
+  background-color: var(--canary-Yellow);
+}
+
+.dropdown-btn{
+  max-width: 32px;
+}
+
+.mid-nav-div{
+  display: flex;
+  gap: 16px;
+}
+
+.welcome-guest-div{
+  display: flex;
+  gap: 32px;
+}
+
+.welcome-guest-div > .CTA{
+  max-width: 30%;
 }

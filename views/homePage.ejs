@@ -1,6 +1,6 @@
 <html lang="en">
-  <%- include("partials/head", {title: "C&D Homepage"}) %>
-  <%- include("partials/nav", {user: user}) %>
+  <%- include("partials/head", {title: "C&D Homepage c:"}) %>
+  <%- include("partials/nav", {user: user, animalFilter: animalFilter}) %>
   <main class="homepage-main">
     <% if (user != undefined){ %>
       <h1 class="wlcm-header">Welcome <%= user.username %></h1>
@@ -21,9 +21,12 @@
         </form>
       </div>
     <% } else { %>
-      <h1>Welcome</h1>
-      <a href="/signup">Sign Up</a>
-      <a href="/login">Login</a>
+      <div class="welcome-guest-div">
+        <h1 class="wlcm-header">Welcome</h1>
+        <a class="CTA" href="/signup">Sign Up</a>
+        <a class="CTA secondary" href="/login">Login</a>
+      </div>
+      
     <% } %>
     <div class="horizontal-divider"></div>
     <div>
@@ -33,7 +36,7 @@
             <div class="msg-board-card">
               <% if (user && user.is_member === true){ %>
                 <div class="author-div">
-                  <img class="author-img" src="logo.png" alt="">
+                  <img class="author-img" src="/logo.png" alt="">
                   <h2><%= message.username %> |</h2>
                   <h2>Team <%= message.animal %></h2>
                 </div>

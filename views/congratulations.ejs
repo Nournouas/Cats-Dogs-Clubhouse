@@ -1,6 +1,6 @@
 <html lang="en">
   <%- include("partials/head", {title: "congratulations"}) %>
-  <%- include("partials/nav", {user: user}) %>
+  <%- include("partials/nav", {user: user, animalFilter: null}) %>
   <main>
     <h1>Welcome <%= user.username %>, congratulations on being upgraded to a <%= role %>!</h1>
     <a href="/homepage">Homepage</a>
